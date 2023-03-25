@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"jack/cmd/email"
 	"jack/cmd/git"
 
 	"github.com/urfave/cli/v2"
@@ -14,6 +15,7 @@ func RootCommand() {
 		Name:  "jack",
 		Usage: "A CLI for doing things",
 		Commands: []*cli.Command{
+			email.EmailCommand(),
 			git.GitCommand(),
 		},
 	}
