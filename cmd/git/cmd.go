@@ -46,18 +46,15 @@ func GitCommand() *cli.Command {
 					},
 				},
 				Action: func(c *cli.Context) error {
-					fmt.Println("CREATING PULL REQUEST...")
+					fmt.Println("Creating pull request...")
 
 					client, err := CreateAuthenticatedClient(c.String("pat"))
 					if err != nil {
 						panic(err)
 					}
 
-					err = CreatePullRequest(client, c.String("owner"), c.String("repo"))
-					if err != nil {
-						panic(err)
-						// fmt.Println(err.Error())
-					}
+					CreatePullRequest(client, c.String("owner"), c.String("repo"))
+
 					return nil
 				},
 			},
