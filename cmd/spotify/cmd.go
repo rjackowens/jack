@@ -2,11 +2,16 @@ package spotify
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/urfave/cli/v2"
 )
 
 func SpotifyCommand() *cli.Command {
+
+	// validMeetings := []string{"standup", "postmortem", "jourfix"}
+	// meetings := cli.NewStringSlice(validMeetings...)
+
 	return &cli.Command{
 		Name:  "spotify",
 		Usage: "Interact with spotify",
@@ -26,8 +31,20 @@ func SpotifyCommand() *cli.Command {
 				Action: func(c *cli.Context) error {
 					fmt.Println("Logging in to Spotify...")
 
-					credentials := cli.NewStringSlice(c.StringSlice("credentials")...)
-					LoginToSpotify(*credentials)
+					credentials := c.StringSlice("credentials")
+					separatedArgs := c.Args() // by default --credentials expects multiple values wrapped in single string
+
+					// if only one value was passed, check if it's a single string with space-separated values
+					if len(credentials) == 1 && strings.Contains(credentials[0], " ") {
+						credentials = strings.Split(credentials[0], " ")
+					}
+
+					// check for multiple separated arguments and add them to the credentials slice
+					for _, arg := range separatedArgs.Slice() {
+						credentials = append(credentials, arg)
+					}
+
+					LoginToSpotify(*cli.NewStringSlice(credentials...))
 
 					return nil
 				},

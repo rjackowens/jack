@@ -9,25 +9,25 @@ import (
 
 func LoginToSpotify(credentials cli.StringSlice) (string, error) {
 
-	// if len(credentials.Value()) != 2 {
-	// 	return "", fmt.Errorf("invalid number of credentials")
-	// }
+	if len(credentials.Value()) != 2 {
+		fmt.Println("Both SPOTIFY_ID or SPOTIFY_SECRET must be passed")
+		return "", fmt.Errorf("Oof")
+	}
+
 	clientID := os.Getenv(credentials.Value()[0])
 	clientSecret := os.Getenv(credentials.Value()[1])
 
 	if clientID == "" || clientSecret == "" {
-		// log.Fatal("SPOTIFY_ID or SPOTIFY_SECRET not set")
 		fmt.Println("SPOTIFY_ID or SPOTIFY_SECRET environment variables not set. Using --credentials")
-		fmt.Println("CREDENTIALS:", credentials)
 
-		if credentials.Value()[0] == "" || credentials.Value()[1] == "" {
-			// return "", fmt.Errorf("invalid number of credentials")
-			fmt.Println("Invalid number of values passed to credentials")
-		}
+		clientID := credentials.Value()[0]
+		clientSecret := credentials.Value()[1]
 
+		fmt.Printf("SPOTIFY_ID: %s\nSPOTIFY_SECRET: %s\n", clientID, clientSecret)
+		return clientID, nil
 	}
 
-	// fmt.Printf("SPOTIFY_ID: %s\nSPOTIFY_SECRET: %s\n", clientID, clientSecret)
-	return "", nil
+	fmt.Printf("SPOTIFY_ID_2: %s\nSPOTIFY_SECRET_2: %s\n", clientID, clientSecret)
+	return clientID, nil
 
 }
