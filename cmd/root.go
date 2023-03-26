@@ -6,6 +6,7 @@ import (
 
 	"jack/cmd/email"
 	"jack/cmd/git"
+	"jack/cmd/spotify"
 
 	"github.com/urfave/cli/v2"
 )
@@ -17,6 +18,7 @@ func RootCommand() {
 		Commands: []*cli.Command{
 			email.EmailCommand(),
 			git.GitCommand(),
+			spotify.SpotifyCommand(),
 		},
 	}
 
