@@ -31,6 +31,10 @@ func SpotifyCommand() *cli.Command {
 				Action: func(c *cli.Context) error {
 					fmt.Println("Logging in to Spotify...")
 
+					if !c.IsSet("credentials") {
+						fmt.Println("Using SPOTIFY_ID and SPOTIFY_SECRET environment variables")
+					}
+
 					credentials := c.StringSlice("credentials")
 					separatedArgs := c.Args() // by default --credentials expects multiple values wrapped in single string
 
@@ -45,6 +49,26 @@ func SpotifyCommand() *cli.Command {
 					}
 
 					LoginToSpotify(*cli.NewStringSlice(credentials...))
+
+					return nil
+				},
+			},
+			{
+				Name:  "player",
+				Usage: "Control Spotify Player",
+				Flags: []cli.Flag{
+					&cli.StringSliceFlag{
+						Name:     "credentials",
+						Aliases:  []string{"c"},
+						Value:    cli.NewStringSlice("SPOTIFY_ID", "SPOTIFY_SECRET"),
+						Usage:    "Spotify client credentials. Required if environment variable SPOTIFY_ID or SPOTIFY_SECRET not set",
+						Required: false,
+					},
+				},
+				Action: func(c *cli.Context) error {
+					fmt.Println("Using Spotify player...")
+
+					SpotifyPlayer()
 
 					return nil
 				},
